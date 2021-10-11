@@ -37,7 +37,7 @@ print()
 
 selected_model = 0
 if len(item.models) > 1:
-    print(INFO, "Pilih model")
+    print(INFO, "เลือกประเภทสินค้า")
     print(Fore.RESET, "-" * 32)
     for index, model in enumerate(item.models):
         print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, model.name)
@@ -47,15 +47,15 @@ if len(item.models) > 1:
         print('\t', Fore.LIGHTBLUE_EX, "ID Model:", Fore.GREEN, model.model_id)
         print(Fore.RESET, "-" * 32)
     print()
-    selected_model = int(input(INPUT + " Pilihan: "))
+    selected_model = int(input(INPUT + " ตัวเลือก: "))
     print()
 
-print(INFO, "Pilih metode pembayaran")
+print(INFO, "เลือกวิธีการชำระเงิน")
 payment_channels = dict(enumerate(PaymentChannel))
 for index, channel in payment_channels.items():
     print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, channel.name)
 print()
-selected_payment_channel = payment_channels[int(input(INPUT + " Pilihan: "))]
+selected_payment_channel = payment_channels[int(input(INPUT + " ตัวเลือก: "))]
 print()
 
 selected_option_info = PaymentChannelOptionInfo.NONE
@@ -68,22 +68,22 @@ if selected_payment_channel is PaymentChannel.TRANSFER_BANK or \
         print(Fore.GREEN + '[' + str(index) + ']' +
               Fore.BLUE, option_info.name)
     print()
-    selected_option_info = options_info[int(input(INPUT + " Pilihan: "))]
+    selected_option_info = options_info[int(input(INPUT + " ตัวเลือก: "))]
 
 if not item.is_flash_sale:
     if item.upcoming_flash_sale is not None:
         flash_sale_start = datetime.fromtimestamp(
             item.upcoming_flash_sale.start_time)
-        print(INFO, "Waktu Flash Sale: ", flash_sale_start.strftime("%H:%M:%S"))
-        print(INFO, "Menunggu Flash Sale...", end='\r')
+        print(INFO, "Flash Sale Time: ", flash_sale_start.strftime("%H:%M:%S"))
+        print(INFO, "Waiting.. Flash Sale", end='\r')
         sleep((datetime.fromtimestamp(
             item.upcoming_flash_sale.start_time) - datetime.now()).total_seconds())
     else:
-        print(PROMPT, "Flash Sale telah Lewat!")
+        print(PROMPT, "Flash Sale has arrived")
         exit(1)
-print(INFO, "Flash Sale telah tiba")
+print(INFO, "Flash Sale Co")
 start = datetime.now()
-print(INFO, "Menambah item ke cart...")
+print(INFO, "Adding items to cart...")
 cart_item = bot.add_to_cart(item, selected_model)
 print(INFO, "Checkout item...")
 bot.checkout(PaymentInfo(
@@ -91,6 +91,6 @@ bot.checkout(PaymentInfo(
     option_info=selected_option_info
 ), cart_item)
 final = datetime.now() - start
-print(INFO, "Item berhasil dibeli dalam waktu", Fore.YELLOW, final.seconds, "detik", final.microseconds // 1000,
-      "milis")
-print(Fore.GREEN + "[*]", "Sukses")
+print(INFO, "Item successfully purchased in time", Fore.YELLOW, final.seconds, "second", final.microseconds // 1000,
+      "ms")
+print(Fore.GREEN + "[*]", "Success")
