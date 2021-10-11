@@ -41,10 +41,11 @@ if len(item.models) > 1:
     print(Fore.RESET, "-" * 32)
     for index, model in enumerate(item.models):
         print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, model.name)
-        print('\t', Fore.LIGHTBLUE_EX, "Harga:",
+        print('\t', Fore.LIGHTBLUE_EX, "ราคา:",
               Fore.GREEN, item.get_price(model.price))
-        print('\t', Fore.LIGHTBLUE_EX, "Stok:", Fore.GREEN, model.stock)
-        print('\t', Fore.LIGHTBLUE_EX, "ID Model:", Fore.GREEN, model.model_id)
+        print('\t', Fore.LIGHTBLUE_EX,
+              "จำนวนสต็อกสินค้า:", Fore.GREEN, model.stock)
+        print('\t', Fore.LIGHTBLUE_EX, "รหัสสินค้า:", Fore.GREEN, model.model_id)
         print(Fore.RESET, "-" * 32)
     print()
     selected_model = int(input(INPUT + " เลือกประเภทสินค้าที่ต้องการ : "))
