@@ -1,9 +1,9 @@
 from urllib.parse import urlencode
-from item         import *
-from user         import User
-from json         import dumps
-from re           import search
-from time         import time
+from item import *
+from user import User
+from json import dumps
+from re import search
+from time import time
 from checkoutdata import *
 import requests
 
@@ -16,22 +16,22 @@ class Bot:
 
     def __default_headers(self) -> dict:
         return {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Cookie": self.user.cookie,
-                "Referer": "https://shopee.co.id/",
-                "User-Agent": self.user.USER_AGENT,
-                "X-Csrftoken": self.user.csrf_token,
-                "if-none-match-": "*"
-            }
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Cookie": self.user.cookie,
+            "Referer": "https://shopee.co.th/",
+            "User-Agent": self.user.USER_AGENT,
+            "X-Csrftoken": self.user.csrf_token,
+            "if-none-match-": "*"
+        }
 
     def fetch_item_from_url(self, url: str) -> Item:
         """
         :param url: the item url
         :return: Item object
         the url will definitely be one of these:
-            - https://shopee.co.id/product/xxxx/xxxx
-            - https://shopee.co.id/Item-Name.xxxx.xxxx
+            - https://shopee.co.th/product/xxxx/xxxx
+            - https://shopee.co.th/Item-Name.xxxx.xxxx
         """
         # https://shopee.co.id/product/xxxx/xxxx
         match = search(r".*/(?P<shopid>\d+)/(?P<itemid>\d+).*?", url)
@@ -46,7 +46,7 @@ class Bot:
 
     def fetch_item(self, item_id: int, shop_id: int) -> Item:
         resp = requests.get(
-            "https://shopee.co.id/api/v2/item/get?" + urlencode({
+            "https://shopee.co.th/api/v2/item/get?" + urlencode({
                 "itemid": item_id,
                 "shopid": shop_id
             }),
@@ -99,7 +99,7 @@ class Bot:
         if not item.models[model_index].is_available():
             raise Exception("out of stock")
         resp = requests.post(
-            url="https://shopee.co.id/api/v2/cart/add_to_cart",
+            url="https://shopee.co.th/api/v2/cart/add_to_cart",
             headers=self.__default_headers(),
             data=dumps({
                 "checkout": True,
@@ -121,7 +121,8 @@ class Bot:
         data = data["data"]["cart_item"]
         return CartItem(
             add_on_deal_id=item.add_on_deal_info.add_on_deal_id,
-            item_group_id=str(data["item_group_id"]) if data["item_group_id"] != 0 else None,
+            item_group_id=str(data["item_group_id"]
+                              ) if data["item_group_id"] != 0 else None,
             item_id=data["itemid"],
             model_id=data["modelid"],
             price=data["price"],
@@ -130,7 +131,7 @@ class Bot:
 
     def __checkout_get(self, payment: PaymentInfo, item: CartItem) -> CheckoutData:
         resp = requests.post(
-            url="https://shopee.co.id/api/v2/checkout/get",
+            url="https://shopee.co.th/api/v2/checkout/get",
             headers=self.__default_headers(),
             # TODO: Implement data
             data=dumps({
@@ -243,7 +244,7 @@ class Bot:
         """
         data = self.__checkout_get(payment, item)
         resp = requests.post(
-            url="https://shopee.co.id/api/v2/checkout/place_order",
+            url="https://shopee.co.th/api/v2/checkout/place_order",
             headers=self.__default_headers(),
             data=dumps({
                 "status": 200,
@@ -268,9 +269,11 @@ class Bot:
             raise Exception("failed to checkout")
         elif resp.status_code == 406:
             print(resp.text)
-            raise Exception("response not acceptable, maybe the item has run out")
+            raise Exception(
+                "response not acceptable, maybe the item has run out")
         elif not resp.ok:
-            raise Exception(f"failed to checkout, response not ok: {resp.status_code}")
+            raise Exception(
+                f"failed to checkout, response not ok: {resp.status_code}")
 
     def buy(self, item: Item, model_index: int, payment: PaymentInfo):
         """
@@ -288,7 +291,7 @@ class Bot:
         remove item from cart
         """
         resp = requests.post(
-            url="https://shopee.co.id/api/v4/cart/update",
+            url="https://shopee.co.th/api/v4/cart/update",
             headers=self.__default_headers(),
             data=dumps({
                 "action_type": 2,

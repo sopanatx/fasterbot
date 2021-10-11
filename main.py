@@ -1,10 +1,10 @@
-from bot          import Bot
-from user         import User
+from bot import Bot
+from user import User
 from checkoutdata import PaymentInfo, PaymentChannel, PaymentChannelOptionInfo
-from datetime     import datetime
-from colorama     import Fore, Style, init
-from time         import sleep
-from datetime     import datetime
+from datetime import datetime
+from colorama import Fore, Style, init
+from time import sleep
+from datetime import datetime
 import os
 
 
@@ -16,22 +16,22 @@ if os.name.lower() == "nt":
     os.system("cls")
 else:
     os.system("clear")
-print(INFO, "Mengambil informasi user...", end='\r')
+print(INFO, "Retrieving user information...", end='\r')
 cookie = open("cookie.txt", 'r')
 user = User.login(cookie.read())
 cookie.close()
 print(INFO, "Welcome", Fore.GREEN, user.name, ' ' * 10)
 print()
 
-print(INFO, "Masukan url barang yang akan dibeli")
+print(INFO, "Enter the url of the item to be purchased")
 bot = Bot(user)
 item = bot.fetch_item_from_url(input(INPUT + " url: " + Fore.RESET))
 
 print(Fore.RESET, "-" * 32)
-print(Fore.LIGHTBLUE_EX, "Nama:", Fore.GREEN, item.name)
-print(Fore.LIGHTBLUE_EX, "Harga:", Fore.GREEN, item.get_price(item.price))
+print(Fore.LIGHTBLUE_EX, "Name:", Fore.GREEN, item.name)
+print(Fore.LIGHTBLUE_EX, "Price:", Fore.GREEN, item.get_price(item.price))
 print(Fore.LIGHTBLUE_EX, "Brand:", Fore.GREEN, item.brand)
-print(Fore.LIGHTBLUE_EX, "Lokasi Toko:", Fore.GREEN, item.shop_location)
+print(Fore.LIGHTBLUE_EX, "Store Location:", Fore.GREEN, item.shop_location)
 print(Fore.RESET, "-" * 32)
 print()
 
@@ -41,7 +41,8 @@ if len(item.models) > 1:
     print(Fore.RESET, "-" * 32)
     for index, model in enumerate(item.models):
         print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, model.name)
-        print('\t', Fore.LIGHTBLUE_EX, "Harga:", Fore.GREEN, item.get_price(model.price))
+        print('\t', Fore.LIGHTBLUE_EX, "Harga:",
+              Fore.GREEN, item.get_price(model.price))
         print('\t', Fore.LIGHTBLUE_EX, "Stok:", Fore.GREEN, model.stock)
         print('\t', Fore.LIGHTBLUE_EX, "ID Model:", Fore.GREEN, model.model_id)
         print(Fore.RESET, "-" * 32)
@@ -64,16 +65,19 @@ if selected_payment_channel is PaymentChannel.TRANSFER_BANK or \
                         PaymentChannel.TRANSFER_BANK else 7:None if selected_payment_channel is
                         PaymentChannel.AKULAKU else 7]))
     for index, option_info in options_info.items():
-        print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, option_info.name)
+        print(Fore.GREEN + '[' + str(index) + ']' +
+              Fore.BLUE, option_info.name)
     print()
     selected_option_info = options_info[int(input(INPUT + " Pilihan: "))]
 
 if not item.is_flash_sale:
     if item.upcoming_flash_sale is not None:
-        flash_sale_start = datetime.fromtimestamp(item.upcoming_flash_sale.start_time)
+        flash_sale_start = datetime.fromtimestamp(
+            item.upcoming_flash_sale.start_time)
         print(INFO, "Waktu Flash Sale: ", flash_sale_start.strftime("%H:%M:%S"))
         print(INFO, "Menunggu Flash Sale...", end='\r')
-        sleep((datetime.fromtimestamp(item.upcoming_flash_sale.start_time) - datetime.now()).total_seconds())
+        sleep((datetime.fromtimestamp(
+            item.upcoming_flash_sale.start_time) - datetime.now()).total_seconds())
     else:
         print(PROMPT, "Flash Sale telah Lewat!")
         exit(1)
