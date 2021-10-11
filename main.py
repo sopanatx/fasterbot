@@ -47,7 +47,7 @@ if len(item.models) > 1:
         print('\t', Fore.LIGHTBLUE_EX, "ID Model:", Fore.GREEN, model.model_id)
         print(Fore.RESET, "-" * 32)
     print()
-    selected_model = int(input(INPUT + " ตัวเลือก: "))
+    selected_model = int(input(INPUT + " เลือกประเภทสินค้าที่ต้องการ : "))
     print()
 
 print(INFO, "เลือกวิธีการชำระเงิน")
