@@ -37,11 +37,11 @@ class User:
     @staticmethod
     def login(cookie: str):
         resp = requests.get(
-            "https://shopee.co.id/api/v1/account_info",
+            "https://shopee.co.th/api/v1/account_info",
             headers={
                 "Accept": "*/*",
                 "Accept-Encoding": "gzip, deflate, br",
-                "Referer": "https://shopee.co.id/",
+                "Referer": "https://shopee.co.th/",
                 "User-Agent": User.USER_AGENT,
                 "Cookie": cookie
             }

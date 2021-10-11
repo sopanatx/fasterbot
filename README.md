@@ -1,35 +1,43 @@
 # Requirement
+
 - Python 3.7.x
 
 Download python di https://www.python.org/downloads/
+
 # Setup
-Install modul `requests` dan `colorama` dengan perintah berikut
+
+Install Module `requests` and `colorama` with the following command
+
 ```sh
 pip install requests colorama
 ```
-jika sudah, buka chrome dan buka https://shopee.co.id/ lalu login.
-tekan F12 lalu masuk tab network.
+
+open chrome and go to https://shopee.co.th/ then login.
+press F12 then enter the network tab.
 
 ![tab network](images/tab_network.png)
 
-refresh webpage dan cari item `/`
+refresh the webpage and find the item `/`
 
 ![forward slash](images/forward_slash.png)
 
-klik item lalu klik kanan pada header "cookie" didalam "Request headers"
+click the item then right click on the "cookie" header in the "Request headers"
 
 ![copy header](images/copy_header.png)
 
-pilih `copy value`.
+choose `copy value`.
 
-edit cookie.txt lalu paste dan save!
+edit cookie.txt then paste and save!
 
-selesai/sudah siap login
+finished / ready to login
 
-jalankan scriptnya dengan perintah berikut
+run the script with the following command
+
 ```
 python main.py
 ```
-# Tambahan
-untuk speed tergantung koneksi internet masing masing.
-dan tidak menjamin 100% dapat
+
+# Addition
+
+for speed depending on each internet connection.
+and does not guarantee 100% can
